@@ -1,0 +1,75 @@
+#pragma once
+
+#include <windows.h>
+
+#define IOCTL_ALLOC_BUFFER CTL_CODE(FILE_DEVICE_UNKNOWN, 0x800, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IOCTL_COPY CTL_CODE(FILE_DEVICE_UNKNOWN, 0x801, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IOCTL_FREE_BUFFER CTL_CODE(FILE_DEVICE_UNKNOWN, 0x802, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IOCTL_SPRAY CTL_CODE(FILE_DEVICE_UNKNOWN, 0x803, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IOCTL_UNSPRAY CTL_CODE(FILE_DEVICE_UNKNOWN, 0x804, METHOD_BUFFERED, FILE_ANY_ACCESS)
+
+#define IOCTL_READ CTL_CODE(FILE_DEVICE_UNKNOWN, 0x805, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IOCTL_WRITE CTL_CODE(FILE_DEVICE_UNKNOWN, 0x806, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IOCTL_BP CTL_CODE(FILE_DEVICE_UNKNOWN, 0x807, METHOD_BUFFERED, FILE_ANY_ACCESS)
+
+
+typedef enum _POOL_TYPE { 
+  NonPagedPool,
+  NonPagedPoolExecute                   = NonPagedPool,
+  PagedPool,
+  NonPagedPoolMustSucceed               = NonPagedPool + 2,
+  DontUseThisType,
+  NonPagedPoolCacheAligned              = NonPagedPool + 4,
+  PagedPoolCacheAligned,
+  NonPagedPoolCacheAlignedMustS         = NonPagedPool + 6,
+  MaxPoolType,
+  NonPagedPoolBase                      = 0,
+  NonPagedPoolBaseMustSucceed           = NonPagedPoolBase + 2,
+  NonPagedPoolBaseCacheAligned          = NonPagedPoolBase + 4,
+  NonPagedPoolBaseCacheAlignedMustS     = NonPagedPoolBase + 6,
+  NonPagedPoolSession                   = 32,
+  PagedPoolSession                      = NonPagedPoolSession + 1,
+  NonPagedPoolMustSucceedSession        = PagedPoolSession + 1,
+  DontUseThisTypeSession                = NonPagedPoolMustSucceedSession + 1,
+  NonPagedPoolCacheAlignedSession       = DontUseThisTypeSession + 1,
+  PagedPoolCacheAlignedSession          = NonPagedPoolCacheAlignedSession + 1,
+  NonPagedPoolCacheAlignedMustSSession  = PagedPoolCacheAlignedSession + 1,
+  NonPagedPoolNx                        = 512,
+  NonPagedPoolNxCacheAligned            = NonPagedPoolNx + 4,
+  NonPagedPoolSessionNx                 = NonPagedPoolNx + 32
+} POOL_TYPE;
+
+typedef struct ioctl_arb_primitive{
+	size_t size;
+	uintptr_t where;
+	char what[1];
+} ioctl_arb_primitive_t;
+
+typedef struct ioctl_alloc{
+	size_t alloc_size;
+	POOL_TYPE pooltype;
+	int tag;
+} ioctl_alloc_t;
+
+typedef struct ioctl_copy{
+	size_t buffer_size;
+	char * data;
+} ioctl_copy_t;
+
+typedef struct ioctl_spray{
+	size_t alloc_size;
+	size_t nb_allocs;
+	POOL_TYPE pooltype;
+	int tag;
+	char what[1];
+} ioctl_spray_t;
+
+typedef struct spray_s
+{
+	size_t spray_index;
+	size_t nb_allocs;
+	size_t alloc_size;
+	POOL_TYPE pooltype;
+	int 	tag;
+	void * allocs[1];
+} spray_t;

@@ -1,0 +1,89 @@
+;
+; vulnerable_driver.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=vulnerable_driver.cat
+DriverVer = 03/30/2020,2.13.36.612
+
+[DestinationDirs]
+DefaultDestDir = 12
+vulnerable_driver_Device_CoInstaller_CopyFiles = 11
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+vulnerable_driver.sys  = 1,,
+;
+
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%vulnerable_driver.DeviceDesc%=vulnerable_driver_Device, Root\vulnerable_driver ; TODO: edit hw-id
+
+[vulnerable_driver_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+vulnerable_driver.sys
+
+;-------------- Service installation
+[vulnerable_driver_Device.NT.Services]
+AddService = vulnerable_driver,%SPSVCINST_ASSOCSERVICE%, vulnerable_driver_Service_Inst
+
+; -------------- vulnerable_driver driver install sections
+[vulnerable_driver_Service_Inst]
+DisplayName    = %vulnerable_driver.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\vulnerable_driver.sys
+
+;
+;--- vulnerable_driver_Device Coinstaller installation ------
+;
+
+[vulnerable_driver_Device.NT.CoInstallers]
+AddReg=vulnerable_driver_Device_CoInstaller_AddReg
+CopyFiles=vulnerable_driver_Device_CoInstaller_CopyFiles
+
+[vulnerable_driver_Device_CoInstaller_AddReg]
+;
+
+
+[vulnerable_driver_Device_CoInstaller_CopyFiles]
+;
+
+
+[vulnerable_driver_Device.NT.Wdf]
+KmdfService =  vulnerable_driver, vulnerable_driver_wdfsect
+[vulnerable_driver_wdfsect]
+KmdfLibraryVersion = 1.15
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
+ClassName="Samples" ; TODO: edit ClassName
+DiskName = "vulnerable_driver Installation Disk"
+vulnerable_driver.DeviceDesc = "vulnerable_driver Device"
+vulnerable_driver.SVCDESC = "vulnerable_driver Service"
