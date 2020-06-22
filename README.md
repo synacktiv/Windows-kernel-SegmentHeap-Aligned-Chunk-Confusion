@@ -1,5 +1,5 @@
 This repository contains a PoC exploit using an exploitation technique called Aligned Chunk Confusion.
-It has been presented at SSTIC 2020. The details on the technique can be found in the paper (link to be added soon).
+The details on the technique can be found in the [paper](https://github.com/synacktiv/Windows-kernel-SegmentHeap-Aligned-Chunk-Confusion/blob/master/Scoop_The_Windows_10_pool.pdf).
 
 This exploit leverages a heap overflow in the Windows kernel heap to elevate its privileges from Low to SYSTEM.
 
@@ -18,7 +18,7 @@ That's why, to be generic, the exploit must:
 The presented exploit can work in both PagedPool and NonPagedPool ; it uses similar techniques with different objects.
 
 
-# The exploit
+# The exploit
 
 
 The exploited vulnerability is not a real one, and is constructed with a driver exposing a fully controlled heap overflow.
@@ -48,10 +48,6 @@ make debug
 ```
 
 
+# Presentations
 
-
-
-
-
-
-
+This work has been presented at [SSTIC 2020](https://www.sstic.org/2020/presentation/pool_overflow_exploitation_since_windows_10_19h1/).
