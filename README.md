@@ -51,4 +51,4 @@ make debug
 # Presentations
 
 This work has been presented at [SSTIC 2020](https://www.sstic.org/2020/presentation/pool_overflow_exploitation_since_windows_10_19h1/) and at [OPCDE 8](https://github.com/comaeio/OPCDE/tree/master/2020/July/1).
-The slides for both presentations are available [here](https://github.com/synacktiv/Windows-kernel-SegmentHeap-Aligned-Chunk-Confusion/blob/master/slides.pdf)
+The slides for both presentations are available [here](https://github.com/synacktiv/Windows-kernel-SegmentHeap-Aligned-Chunk-Confusion/blob/master/slides.pdf).
